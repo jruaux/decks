@@ -7,6 +7,7 @@ We're building a migration tool that reads from a relational database and writes
 The system should be designed to write to Redis streams but be extensible to other Redis data structures (hashes, strings, JSON, etc.).
 
 Additionally, the system must be:
+
 * Highly available and scalable at the source, worker processes, and the target Redis database.
 * Handle non-durable events that come in bursts at the source (design to handle traffic spikes).
 * Multithreaded and support job management for worker processes (consider in-memory queues vs transient Redis Streams).
