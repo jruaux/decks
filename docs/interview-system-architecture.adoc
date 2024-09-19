@@ -48,14 +48,14 @@ image::architecture.svg[]
 - _Focus_: Explore how the candidate handles failure scenarios and ensures data availability.
 - _Expected Answers_:
   * Retry strategy with backoff for failed writes.
-  * Temporary storage of events in durable queues until Redis is back online.
+  * Temporary storage of events in queues until Redis is back online.
   * Idempotent writes and deduplication to prevent data loss.
 
 === 5. Performance vs Scalability (7 mins)
 - _Question_: How would you ensure that the system handles increasing data volumes without sacrificing performance, especially during traffic spikes?
 - _Focus_: Test the candidate's approach to optimizing for both performance and scalability.
 - _Expected Answers_:
-  * Batching, pipelining, and bulk writes to Redis to optimize throughput.
+  * Batching, pipelining to optimize throughput.
   * Dynamic scaling of workers and efficient resource utilization.
   * Monitoring and addressing bottlenecks (network, I/O, Redis CPU).
 
