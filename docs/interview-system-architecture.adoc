@@ -2,16 +2,16 @@
 :imagesdir: images/interview
 
 == Scenario
-We're building a migration tool that reads from a relational database and writes to Redis streams.
+We're building a migration tool that reads from a relational database and writes to Redis.
 
-The system should be designed to write to Redis streams but be extensible to other Redis data structures (hashes, strings, JSON, etc.).
+The system should be designed in a way that supports any target Redis data structure (hashes, strings, JSON, etc.).
 
 Additionally, the system must be:
 
 * Highly available and scalable for all components (readers, processors, writers).
 * Handle non-durable events that come in bursts from the source (i.e. handle traffic spikes).
 * Resilient to source and target failures
-* Multithreading and job management (consider in-memory queues vs transient Redis Streams).
+* Multithreading and job management (consider in-memory queues).
 
 Start with the naive case of a SQL query to read from database tables but keep in mind the real use case is Change Data Capture (reading from a transaction log that could be non-durable and bursty).
 
@@ -23,7 +23,7 @@ image::architecture.svg[]
 - _Question_: How would you design a migration tool that reads from an event source and writes to Redis streams, ensuring it can be extended to other Redis data structures and handles scalability and availability at the source, worker processes, and target Redis database?
 - _Focus_: Evaluate understanding of modular design, abstraction for Redis data structures, and general approach to handling availability and scalability across the system.
 - _Expected Answers_:
-  * Separation of concerns between the reader, worker processes, and writer.
+  * Separation of concerns between the reader, processors, and writer.
   * Abstraction for Redis data structure flexibility.
   * Use of queues or buffers to handle traffic spikes and decouple components.
 
