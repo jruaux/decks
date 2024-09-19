@@ -4,9 +4,7 @@
 == Scenario
 We're building a migration tool that reads from a relational database and writes to Redis.
 
-The system should be designed in a way that supports any target Redis data structure (hashes, strings, JSON, etc.).
-
-Additionally, the system must be:
+The system must be:
 
 * Highly available and scalable for all components (readers, processors, writers).
 * Handle non-durable events that come in bursts from the source (i.e. handle traffic spikes).
