@@ -1,5 +1,5 @@
-
 = System Architecture Interview
+:imagesdir: images/interview
 
 == Scenario
 We're building a migration tool that reads from a relational database and writes to Redis streams.
@@ -10,6 +10,8 @@ Additionally, the system must be:
 - Multithreaded and support job management for worker processes (consider in-memory queues vs transient Redis Streams).
 - Resilient in case the target Redis database is down.
 Start with the naive case of a SQL query to read from database tables but keep in mind the real use case is Change Data Capture (reading from a transaction log that could be non-durable and bursty).
+
+image::architecture.svg[]
 
 == Interview Structure (45 minutes)
 
