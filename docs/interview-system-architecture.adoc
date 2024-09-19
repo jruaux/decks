@@ -8,10 +8,10 @@ The system should be designed to write to Redis streams but be extensible to oth
 
 Additionally, the system must be:
 
-* Highly available and scalable at the source, worker processes, and the target Redis database.
-* Handle non-durable events that come in bursts at the source (design to handle traffic spikes).
-* Multithreaded and support job management for worker processes (consider in-memory queues vs transient Redis Streams).
-* Resilient in case the target Redis database is down.
+* Highly available and scalable for all components (readers, processors, writers).
+* Handle non-durable events that come in bursts from the source (i.e. handle traffic spikes).
+* Resilient to source and target failures
+* Multithreading and job management (consider in-memory queues vs transient Redis Streams).
 
 Start with the naive case of a SQL query to read from database tables but keep in mind the real use case is Change Data Capture (reading from a transaction log that could be non-durable and bursty).
 
