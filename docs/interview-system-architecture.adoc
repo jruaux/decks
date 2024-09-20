@@ -26,7 +26,6 @@ This table is constantly updated with new orders (`order_id` is always increasin
 _Question_: What approach would you take to read rows from this table and write the data to Redis?
 
 [TIP]
-.Redis Hashes
 ====
 https://redis.io/docs/latest/develop/data-types/hashes/[Redis hashes] are a good match for relational databases.
 
