@@ -57,8 +57,9 @@ _Question_:
 _Expected Answers_:
 
   * Multithread the read/process/write components
-  * Either partition the reading, making sure multiple threads are not duplicating or missing rows
-  * Or have a single reader and an internal queue that multiple processors read from
+  * Two solutions:
+  ** Partition the reading, making sure multiple threads are not duplicating or missing rows
+  ** Or have a single reader and an internal queue that multiple processors read from
 
 == Fault-Tolerance
 
