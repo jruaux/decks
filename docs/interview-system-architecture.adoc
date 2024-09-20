@@ -4,158 +4,67 @@
 == Scenario
 We're building a migration tool that reads from a relational database and writes to Redis.
 
-The system must be:
+The goal of this exercise is to design such as system and identify solutions to key concerns like Highly Availability (HA) and Scalability.
 
-* Highly available and scalable for all components (readers, processors, writers).
-* Handle non-durable events that come in bursts from the source (i.e. handle traffic spikes).
-* Resilient to source and target failures
-* Multithreading and job management (consider in-memory queues).
+== Initial Design
 
-Start with the naive case of a SQL query to read from database tables but keep in mind the real use case is Change Data Capture (reading from a transaction log that could be non-durable and bursty).
+We will start with a single `orders` table that has the following schema:
 
-image::architecture.svg[]
+[cols="1,1"]
+|===
+| Column | Type
 
-== Interview Structure (45 minutes)
+| `order_id` | `INTEGER`
+| `customer_id` | `INTEGER`
+| `product_id` | `INTEGER`
+| `order_date` | `DATE`
 
-=== 1. High-Level Architecture Design (10 mins)
-- _Question_: How would you design a migration tool that reads from an event source and writes to Redis streams, ensuring it can be extended to other Redis data structures and handles scalability and availability at the source, worker processes, and target Redis database?
-- _Focus_: Evaluate understanding of modular design, abstraction for Redis data structures, and general approach to handling availability and scalability across the system.
-- _Expected Answers_:
-  * Separation of concerns between the reader, processors, and writer.
-  * Abstraction for Redis data structure flexibility.
-  * Use of queues or buffers to handle traffic spikes and decouple components.
+|===
 
-=== 2. Handling Traffic Spikes at the Source (7 mins)
-- _Question_: How would you handle non-durable events coming in bursts at the source? How do you design the reader to handle traffic spikes while ensuring availability?
-- _Focus_: Assess strategies for buffering and scaling the reader during spikes.
-- _Expected Answers_:
-  * In-memory queue or Redis Streams as buffers.
-  * Elastic scaling of readers to handle burst traffic.
-  * Backpressure mechanisms to control event consumption.
+This table is constantly updated with new orders (`order_id` is always increasing).
 
-=== 3. Worker Processes: Multithreading and Job Management (8 mins)
-- _Question_: How would you design the worker processes to support multithreading, job management, and scalability across multiple processes?
-- _Focus_: Test understanding of concurrency, job distribution, and scaling workers horizontally.
-- _Expected Answers_:
-  * Multithreading with job queues for parallel task processing.
-  * Load balancing across worker processes using in-memory queues or Redis Streams.
-  * Handling failures and job reassignment in a multi-worker environment.
+_Question_: What approach would you take to read rows from this table and write the data to Redis?
 
-=== 4. Handling Redis Downtime and Resilience (7 mins)
-- _Question_: What would you do if the target Redis database is down? How would you ensure the system remains resilient and available?
-- _Focus_: Explore how the candidate handles failure scenarios and ensures data availability.
-- _Expected Answers_:
-  * Retry strategy with backoff for failed writes.
-  * Temporary storage of events in queues until Redis is back online.
-  * Idempotent writes and deduplication to prevent data loss.
+TIP: https://redis.io/docs/latest/develop/data-types/hashes/[Redis hashes] are a good match for relational databases.
 
-=== 5. Performance vs Scalability (7 mins)
-- _Question_: How would you ensure that the system handles increasing data volumes without sacrificing performance, especially during traffic spikes?
-- _Focus_: Test the candidate's approach to optimizing for both performance and scalability.
-- _Expected Answers_:
-  * Batching, pipelining to optimize throughput.
-  * Dynamic scaling of workers and efficient resource utilization.
-  * Monitoring and addressing bottlenecks (network, I/O, Redis CPU).
+You can insert a hash into Redis with the `HSET` command: `HSET key field value [field value ...]`
 
-=== 6. Conclusion and Summary (6 mins)
-- Summarize the candidate’s approach, ask for final thoughts on trade-offs between latency, availability, and throughput, and how they'd monitor and evolve the system.
-- Evaluate their approach to designing scalable, resilient systems with a focus on real-world scenarios.
+_Expected Answers_:
+  * Assume `order_id` is a sequence.
+  * Read rows in batches (pages). Use the last fetched `order_id` as a parameter to the next page.
+  * SQL query: `SELECT * FROM orders WHERE order_id BETWEEN ? AND ?`
+  * Separation of concerns with reader, processor, and writer.
+  * Read, process, and write rows in batches
 
-== General Topics
+== Scalability
 
-Various system design topics, including pros and cons.
-*Everything is a trade-off*.
+The `orders` table is updated at a rate of 5,000 operations/second and our tool is not able to keep up with the rate of change.
 
-=== Performance vs Scalability
+_Question_:H ow can we modify/enhance our previous design so that we can scale?
 
-Performance problem if your system is slow for a single user.
-Scalability problem if your system is fast for a single user but slow under load.
+_Expected Answers_:
+  * Multithread the read/process/write components
+  * Either partition the reading, making sure multiple threads are not duplicating or missing rows
+  * Or have a single reader and an internal queue that multiple processors read from
 
-=== Latency vs Throughput
+== Fault-Tolerance
 
-Latency is the time to perform some action
-Throughtput is number of actions performed per unit of time
-Usually need to maximize throughput with acceptable latency.
+The multithreaded/multi-process design we previously put together does not take care of failures with the source database or the target Redis database.
 
-=== Availability vs Consistency
+_Question_: What changes can we make to our design so that we don't lose data in case the source database or Redis is down?
 
-CAP Theorem
-CP: Waiting for a response from the partitioned node might result in a timeout error. CP is a good choice if your business needs require atomic reads and writes.
-AP: Responses return the most recent version of the data available on a node, which might not be the latest. Writes might take some time to propagate when the partition is resolved.
+_Expected Answers_:
+  * Use a checkpointing mechanism that persists the last `order_id` successfully processed.
 
-==== Consistency patterns
-Weak: After a write, reads may or may not see it. A best effort approach is taken.
-Eventual:  After a write, reads will eventually see it (typically within milliseconds). Data is replicated asynchronously.
-Strong: After a write, reads will see it. Data is replicated synchronously.
+== Eventing
 
-==== Availability patterns
-* Fail-over
-* Replication
-* Active/passive
-* Active/active
-* 9s
-** three 9s: 8h/year, 1m26s a day
-** four 9s: 52min/year, 9s a day
+It turns out that the `order_id` column is not monotonously increasing but rather is a unique ID that is generated by an Order Management System.
+Also orders can be updated or cancelled and these need to be reflected in the target Redis database.
 
-=== Databases
+_Question_: How can we listen to changes happening on the source database? What could these change events look like?
 
-==== Database Types
-* SQL vs noSQL (kv, document, timeseries, ...)
-* ACID vs eventual consistency
-
-==== Data Structures
-* Normalization/denormalization
-* Joins
-
-==== Replication
-* Active/passive: 
-* Active/active
-** either loosely consistent (violating ACID)
-** or increased write latency due to synchronization
-** Conflict resolution (CRDB)
-* Geo-replication
-
-==== Scalability and performance
-* Sharding
-* Caching
-* Indexing
-** CPU/memory trade-off
-** Index types: hash vs tree
-
-==== Operating systems
-* File system: fsync
-* Disk vs Memory
-** DDR4 latency: ~20ns
-** SSD latency: ~25μs
-* CPU
-
-==== Networking
-* TCP/IP stack
-* HTTP
-* RESP
-* Batching
-* Latency vs throughput
-
-==== Concurrency
-* Threads
-* Processes
-* Threading in the language you know
-* Locks
-* Mutex
-* Etc.
-
-
-==== Observability
-* Logging
-* Metrics
-* Tracing
-
-==== Web
-* Load balancers/proxies
-
-==== Distributed Systems
-* CAP theorem basics and designing scalable systems
-* Distribution vs replication
-* Queues
-* Pub/sub
+_Expected Answers_:
+  * Introduce a Change Data Capture component for the source database
+  * Design a change-event listener and queue from which the multiple threads can dequeue
+  
 
