@@ -30,7 +30,6 @@ You can insert a hash into Redis with the `HSET` command: `HSET key field value 
 
 _Expected Answers_:
 
-  * Assume `order_id` is a sequence.
   * Read rows in batches (pages). Use the last fetched `order_id` as a parameter to the next page.
   * SQL query: `SELECT * FROM orders WHERE order_id BETWEEN ? AND ?`
   * Separation of concerns with reader, processor, and writer.
