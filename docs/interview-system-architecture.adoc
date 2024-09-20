@@ -26,10 +26,10 @@ This table is constantly updated with new orders (`order_id` is always increasin
 _Question_: What approach would you take to read rows from this table and write the data to Redis?
 
 TIP: https://redis.io/docs/latest/develop/data-types/hashes/[Redis hashes] are a good match for relational databases.
-
 You can insert a hash into Redis with the `HSET` command: `HSET key field value [field value ...]`
 
 _Expected Answers_:
+
   * Assume `order_id` is a sequence.
   * Read rows in batches (pages). Use the last fetched `order_id` as a parameter to the next page.
   * SQL query: `SELECT * FROM orders WHERE order_id BETWEEN ? AND ?`
@@ -43,6 +43,7 @@ The `orders` table is updated at a rate of 5,000 operations/second and our tool 
 _Question_:H ow can we modify/enhance our previous design so that we can scale?
 
 _Expected Answers_:
+
   * Multithread the read/process/write components
   * Either partition the reading, making sure multiple threads are not duplicating or missing rows
   * Or have a single reader and an internal queue that multiple processors read from
@@ -54,6 +55,7 @@ The multithreaded/multi-process design we previously put together does not take 
 _Question_: What changes can we make to our design so that we don't lose data in case the source database or Redis is down?
 
 _Expected Answers_:
+
   * Use a checkpointing mechanism that persists the last `order_id` successfully processed.
 
 == Eventing
@@ -64,6 +66,7 @@ Also orders can be updated or cancelled and these need to be reflected in the ta
 _Question_: How can we listen to changes happening on the source database? What could these change events look like?
 
 _Expected Answers_:
+
   * Introduce a Change Data Capture component for the source database
   * Design a change-event listener and queue from which the multiple threads can dequeue
   
