@@ -6,6 +6,8 @@ We're building a migration tool that reads from a relational database and writes
 
 The goal of this exercise is to design such as system and identify solutions to key concerns like Highly Availability (HA) and Scalability.
 
+image::scenario.svg[]
+
 == Initial Design
 
 We will start with a single `orders` table that has the following schema:
