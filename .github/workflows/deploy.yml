@@ -28,9 +28,6 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: false
 
-      - name: Install asciidoctor-revealjs
-        run: gem install asciidoctor-revealjs
-
       - name: Build presentations
         run: make build
 

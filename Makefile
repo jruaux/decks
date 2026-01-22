@@ -29,7 +29,7 @@ install:
 	@gem install asciidoctor-revealjs
 
 # Build all presentations
-build: $(BUILD_DIR) $(HTML_FILES) copy-assets
+build: install $(BUILD_DIR) $(HTML_FILES) copy-assets
 	@echo "Build complete! HTML files are in $(BUILD_DIR)/"
 
 # Create build directory
