@@ -27,11 +27,11 @@ Julien Ruaux mailto:julien@redis.com[julien@redis.com]
 --
 
 [background-image="fire-1.png",background-size="cover"]
-== Imagine: A House on Fire 🔥
+== Imagine
 
 [%step]
+* A house on fire
 * Putting out the fire = workload (requests)
-* Need to put out the fire
 * How do we move water from source to fire?
 
 [background-image="fire-2.png",background-size="cover"]
