@@ -1,16 +1,18 @@
-.PHONY: help build serve clean install
+.PHONY: help all build serve clean install copy-assets
 
 # Configuration
 DOCS_DIR := docs
 BUILD_DIR := build
 PORT := 8000
-ASCIIDOCTOR := asciidoctor-revealjs
+ASCIIDOCTOR := /opt/homebrew/lib/ruby/gems/3.4.0/bin/asciidoctor-revealjs
 
 # Find all .adoc files in docs/ directory (excluding index.adoc)
 ADOC_FILES := $(filter-out $(DOCS_DIR)/index.adoc, $(wildcard $(DOCS_DIR)/*.adoc))
 HTML_FILES := $(patsubst $(DOCS_DIR)/%.adoc,$(BUILD_DIR)/%.html,$(ADOC_FILES))
 
 # Default target
+.DEFAULT_GOAL := build
+
 help:
 	@echo "Available targets:"
 	@echo "  make install    - Install required dependencies (asciidoctor-revealjs)"
@@ -29,15 +31,12 @@ install:
 	@gem install asciidoctor-revealjs
 
 # Build all presentations
-build: install $(BUILD_DIR) $(HTML_FILES) copy-assets
+build: install $(HTML_FILES) copy-assets
 	@echo "Build complete! HTML files are in $(BUILD_DIR)/"
-
-# Create build directory
-$(BUILD_DIR):
-	@mkdir -p $(BUILD_DIR)
 
 # Convert individual .adoc files to .html
 $(BUILD_DIR)/%.html: $(DOCS_DIR)/%.adoc
+	@mkdir -p $(BUILD_DIR)
 	@echo "Building $@..."
 	@$(ASCIIDOCTOR) \
 		-a revealjsdir=https://cdn.jsdelivr.net/npm/reveal.js@4.5.0 \
@@ -50,7 +49,8 @@ $(BUILD_DIR)/%.html: $(DOCS_DIR)/%.adoc
 		-o $@ $<
 
 # Copy static assets (CSS, fonts, images)
-copy-assets: $(BUILD_DIR)
+copy-assets:
+	@mkdir -p $(BUILD_DIR)
 	@echo "Copying static assets..."
 	@cp -r $(DOCS_DIR)/css $(BUILD_DIR)/ 2>/dev/null || true
 	@cp -r $(DOCS_DIR)/fonts $(BUILD_DIR)/ 2>/dev/null || true

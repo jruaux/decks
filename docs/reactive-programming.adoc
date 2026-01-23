@@ -1,0 +1,178 @@
+= From Batch to Reactive: A Journey in Data Replication
+:imagesdir: images/reactive
+:page-url: {site-url}/reactive-programming.html
+
+{nbsp} +
+{nbsp} +
+
+---
+
+Julien Ruaux mailto:julien@redislabs.com[julien@redislabs.com]
+
+== The Pain 😫
+
+[%step]
+* Replicating millions of keys between Redis instances
+* How big should my batches be? 🤷
+* How many threads do I need? 🤷
+* What about queue sizes? 🤷
+* Trial and error... forever tuning
+
+[NOTE.speaker]
+--
+* RIOT does Redis replication using Spring Batch
+* Every deployment is different
+* Customers constantly asking: "What settings should I use?"
+* No good answer - depends on network, data size, Redis version...
+--
+
+[background-image="fire-1.png",background-size="cover"]
+== Imagine: A House on Fire 🔥
+
+[%step]
+* Putting out the fire = workload (requests)
+* Need to put out the fire
+* How do we move water from source to fire?
+
+[background-image="fire-2.png",background-size="cover"]
+== The Batch Way: Carrying Buckets
+
+[%step]
+* One thread = one person with buckets
+* Fill bucket → Walk to fire → Pour → Walk back
+* Repeat
+
+[%step]
+*Problem:* Lots of waiting and idle time
+
+[background-image="fire-3.png",background-size="cover"]
+== Can We Carry Bigger Buckets?
+
+[%step]
+* Bigger bucket = larger batch size
+* More data per trip
+* But... heavier (more memory)
+* Slower to fill and carry
+
+[%step]
+*Same problem:* Still waiting between trips
+
+[background-image="fire-4.png",background-size="cover"]
+== Can We Add More People?
+
+[%step]
+* More threads = more firefighters
+* Need someone to coordinate them
+* Synchronization overhead
+* Can still run out of threads
+* How many is optimal? 🤷
+
+[%step]
+*Complexity:* Coordination + tuning is hard
+
+[background-image="fire-5.png",background-size="cover"]
+== The Realization 💡
+
+[%step]
+* The problem isn't the bucket size
+* The problem isn't the number of people
+* *The problem is the approach itself*
+
+[%step]
+What if we didn't carry buckets at all?
+
+[NOTE.speaker]
+--
+* We're optimizing the wrong thing
+* Batch processing is fundamentally limited
+* There's a better way...
+--
+
+[background-image="fire-6.png",background-size="cover"]
+== The Reactive Way: A Water Pump
+
+[%step]
+* Stream, don't batch
+* Publisher → Pipe → Subscriber
+* Water flows continuously as needed
+
+[%step]
+*Backpressure:* Subscriber controls the flow
+
+[%step]
+* "Give me 10 items right now"
+* No overwhelming the target
+* Natural flow control
+
+[NOTE.speaker]
+--
+* Publisher (water source) → Pipe → Subscriber (fire)
+* Continuous stream - no buckets, no walking, no waiting
+* Backpressure is the killer feature
+* Subscriber tells Publisher how much it can handle
+* Prevents cascading failures
+--
+
+== Where Did This Come From?
+
+[%step]
+* *2009:* Rx.NET (Microsoft, Erik Meijer)
+* *2013:* Reactive Manifesto
+* *2014:* Reactive Streams (JVM spec)
+* *Today:* RxJS, Reactor, Rx.NET, RxPy, Tokio
+
+[NOTE.speaker]
+--
+* Started at Microsoft with Rx.NET in 2009
+* Reactive Manifesto (2013) defined principles
+* Reactive Streams (2014) standardized JVM implementations
+* Not a new fad - 15+ years of evolution
+* Available in virtually every major language
+* Project Reactor is Spring's implementation
+--
+
+== The Catch: Need Reactive All The Way
+
+[quote]
+You can't have a reactive pipe if one end is blocking
+
+[%step]
+* Reactive drivers (non-blocking I/O)
+* Reactive servers (if building web apps)
+
+[NOTE.speaker]
+--
+* Redis has Lettuce (reactive) ✅
+* Relational DBs: R2DBC available for Postgres, MySQL, etc.
+* Some databases only have blocking drivers
+* You CAN use blocking calls, but you lose the benefits
+--
+
+== Why This Matters: Solving the Pain
+
+[%step]
+* ✅ *No more tuning guesswork:* Fewer knobs to turn
+* ✅ *Automatic flow control* (Backpressure)
+* ✅ *Better resource usage*
+* ✅ *Simpler codebase:* ~4000 LOC → ~500 LOC
+
+[NOTE.speaker]
+--
+* Remember the pain: "How many threads? What batch size?"
+* Reactive doesn't eliminate ALL tuning, but drastically simplifies it
+* NOT about raw speed - about efficient resource use
+* Perfect for I/O-bound work like Redis replication
+--
+
+== Thank You!
+
+{nbsp} +
+{nbsp} +
+
+*Resources:*
+
+* Project Reactor: https://projectreactor.io
+* Lettuce: https://lettuce.io
+* RIOT: https://github.com/redis/riot
+* This presentation: {page-url}
+
