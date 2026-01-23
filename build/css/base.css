@@ -1,8 +1,0 @@
-.reveal section img { background:none; border:none; box-shadow:none; }
-.reveal .left {     text-align: left; }
-.reveal .left PRE { margin: 20px 0; width: 100%; }
-.col3-l { float: left; width: 33% }
-.col3-lc { float: left; width: 66% }
-.col3-c { width: 33%; display: inline-block; }
-.col3-cr { float: right; width: 66% }
-.col3-r { float: right; width: 33% }
