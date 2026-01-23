@@ -34,6 +34,25 @@ install:
 
 # Build all presentations
 build: install $(HTML_FILES) copy-assets
+	@echo "Generating index.html..."
+	@echo '<!DOCTYPE html>' > $(BUILD_DIR)/index.html
+	@echo '<html lang="en"><head><meta charset="UTF-8">' >> $(BUILD_DIR)/index.html
+	@echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">' >> $(BUILD_DIR)/index.html
+	@echo '<title>Julien'\''s Presentations</title><style>' >> $(BUILD_DIR)/index.html
+	@echo 'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;' >> $(BUILD_DIR)/index.html
+	@echo 'max-width:800px;margin:50px auto;padding:20px;line-height:1.6;background:#1a1a1a;color:#e0e0e0;}' >> $(BUILD_DIR)/index.html
+	@echo 'h1{color:#fff;border-bottom:2px solid #444;padding-bottom:10px;}' >> $(BUILD_DIR)/index.html
+	@echo 'ul{list-style:none;padding:0;}li{margin:10px 0;}' >> $(BUILD_DIR)/index.html
+	@echo 'a{color:#4a9eff;text-decoration:none;font-size:18px;}' >> $(BUILD_DIR)/index.html
+	@echo 'a:hover{text-decoration:underline;color:#6bb3ff;}' >> $(BUILD_DIR)/index.html
+	@echo '</style></head><body><h1>Julien'\''s Presentations</h1><ul>' >> $(BUILD_DIR)/index.html
+	@for file in $(BUILD_DIR)/*.html; do \
+		[ "$$(basename $$file)" = "index.html" ] && continue; \
+		filename=$$(basename $$file); \
+		title=$$(echo "$${filename%.html}" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $$i=toupper(substr($$i,1,1)) tolower(substr($$i,2));}1'); \
+		echo "<li><a href=\"$$filename\">$$title</a></li>" >> $(BUILD_DIR)/index.html; \
+	done
+	@echo '</ul></body></html>' >> $(BUILD_DIR)/index.html
 	@echo "Build complete! HTML files are in $(BUILD_DIR)/"
 
 # Convert individual .adoc files to .html
