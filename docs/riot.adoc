@@ -6,7 +6,7 @@
 
 '''
 
-Julien Ruaux <mailto:julien@redislabs.com[julien@redislabs.com]>
+Julien Ruaux <mailto:julien@redis.com[julien@redis.com]>
 
 '''
 
