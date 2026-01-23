@@ -4,7 +4,9 @@
 DOCS_DIR := docs
 BUILD_DIR := build
 PORT := 8000
-ASCIIDOCTOR := /opt/homebrew/lib/ruby/gems/3.4.0/bin/asciidoctor-revealjs
+# Use gem executables directory or fall back to PATH
+GEM_BIN := $(shell gem environment | grep "EXECUTABLE DIRECTORY" | cut -d: -f2 | tr -d ' ')
+ASCIIDOCTOR := $(GEM_BIN)/asciidoctor-revealjs
 
 # Find all .adoc files in docs/ directory (excluding index.adoc)
 ADOC_FILES := $(filter-out $(DOCS_DIR)/index.adoc, $(wildcard $(DOCS_DIR)/*.adoc))
