@@ -69,13 +69,14 @@ $(BUILD_DIR)/%.html: $(DOCS_DIR)/%.adoc
 		-a source-highlighter=highlight.js \
 		-o $@ $<
 
-# Copy static assets (CSS, fonts, images)
+# Copy static assets (CSS, fonts, images, redirects)
 copy-assets:
 	@mkdir -p $(BUILD_DIR)
 	@echo "Copying static assets..."
 	@cp -r $(DOCS_DIR)/css $(BUILD_DIR)/ 2>/dev/null || true
 	@cp -r $(DOCS_DIR)/fonts $(BUILD_DIR)/ 2>/dev/null || true
 	@cp -r $(DOCS_DIR)/images $(BUILD_DIR)/ 2>/dev/null || true
+	@cp -r $(DOCS_DIR)/reactive $(BUILD_DIR)/ 2>/dev/null || true
 
 # Start a local web server
 serve:
