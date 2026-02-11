@@ -1,6 +1,6 @@
 = From Batch to Reactive: A Journey in Data Replication
 :imagesdir: images/reactive
-:page-url: https://decks.ruaux.org/reactive-programming.html
+:page-url: https://decks.ruaux.org/reactive.html
 
 {nbsp} +
 {nbsp} +
@@ -173,7 +173,7 @@ You can't have a reactive pipe if one end is blocking
 * Project Reactor: https://projectreactor.io[projectreactor.io]
 * Lettuce: https://lettuce.io[lettuce.io]
 * Redis Cache: https://github.com/redis-field-engineering/redis-cache-java[github.com/redis-field-engineering/redis-cache-java]
-* This presentation: https://decks.ruaux.org/reactive-programming.html[decks.ruaux.org/reactive-programming.html]
+* This presentation: https://decks.ruaux.org/reactive.html[decks.ruaux.org/reactive.html]
 --
 
 [.col3-r]
