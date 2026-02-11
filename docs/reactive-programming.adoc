@@ -1,6 +1,6 @@
 = From Batch to Reactive: A Journey in Data Replication
 :imagesdir: images/reactive
-:page-url: {site-url}/reactive-programming.html
+:page-url: https://decks.ruaux.org/reactive-programming.html
 
 {nbsp} +
 {nbsp} +
