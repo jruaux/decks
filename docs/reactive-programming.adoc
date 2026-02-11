@@ -166,13 +166,18 @@ You can't have a reactive pipe if one end is blocking
 
 == Thank You!
 
+[.col3-l]
+--
 *Resources:*
 
 * Project Reactor: https://projectreactor.io[projectreactor.io]
 * Lettuce: https://lettuce.io[lettuce.io]
 * Redis Cache: https://github.com/redis-field-engineering/redis-cache-java[github.com/redis-field-engineering/redis-cache-java]
+* This presentation: https://decks.ruaux.org/reactive-programming.html[decks.ruaux.org/reactive-programming.html]
+--
 
+[.col3-r]
+--
 image::qrcode.svg[QR Code,200,200]
-
-https://decks.ruaux.org/reactive-programming.html[decks.ruaux.org/reactive-programming.html]
+--
 
