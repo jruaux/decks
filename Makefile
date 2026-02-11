@@ -69,14 +69,20 @@ $(BUILD_DIR)/%.html: $(DOCS_DIR)/%.adoc
 		-a source-highlighter=highlight.js \
 		-o $@ $<
 
-# Copy static assets (CSS, fonts, images, redirects)
+# Copy static assets (CSS, fonts, images)
 copy-assets:
 	@mkdir -p $(BUILD_DIR)
 	@echo "Copying static assets..."
 	@cp -r $(DOCS_DIR)/css $(BUILD_DIR)/ 2>/dev/null || true
 	@cp -r $(DOCS_DIR)/fonts $(BUILD_DIR)/ 2>/dev/null || true
 	@cp -r $(DOCS_DIR)/images $(BUILD_DIR)/ 2>/dev/null || true
-	@cp -r $(DOCS_DIR)/reactive $(BUILD_DIR)/ 2>/dev/null || true
+	@echo "Generating short URL redirects..."
+	@for file in $(BUILD_DIR)/*.html; do \
+		[ "$$(basename $$file)" = "index.html" ] && continue; \
+		name=$${file%.html}; \
+		mkdir -p $$name; \
+		echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=../'"$$(basename $$file)"'"><link rel="canonical" href="https://decks.ruaux.org/'"$$(basename $$file)"'"></head><body><p>Redirecting...</p></body></html>' > $$name/index.html; \
+	done
 
 # Start a local web server
 serve:
