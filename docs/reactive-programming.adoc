@@ -166,13 +166,13 @@ You can't have a reactive pipe if one end is blocking
 
 == Thank You!
 
-{nbsp} +
-{nbsp} +
-
 *Resources:*
 
 * Project Reactor: https://projectreactor.io
 * Lettuce: https://lettuce.io
 * Redis Cache: https://github.com/redis-field-engineering/redis-cache-java
-* This presentation: {page-url}
+
+image::qrcode.svg[QR Code,200,200]
+
+{page-url}
 
