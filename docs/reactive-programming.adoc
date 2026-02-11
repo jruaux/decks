@@ -173,6 +173,6 @@ You can't have a reactive pipe if one end is blocking
 
 * Project Reactor: https://projectreactor.io
 * Lettuce: https://lettuce.io
-* RIOT: https://github.com/redis/riot
+* Redis Cache: https://github.com/redis-field-engineering/redis-cache-java
 * This presentation: {page-url}
 
