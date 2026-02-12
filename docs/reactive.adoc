@@ -116,7 +116,9 @@ What if we didn't carry buckets at all?
 == Where Did This Come From?
 
 [%step]
-* *2009-2012*: Reactive principles (Rx.Net, Reactive Streams)
+* *2009-2012*: Reactive principles emerge
+** Rx.Net
+** Reactive Streams
 * *2015*: Language support
 * *Today:* RxJS, Reactor, Rx.NET, RxPy, RxRust
 
@@ -147,7 +149,7 @@ You can't have a reactive pipe if one end is blocking
 * You CAN use blocking calls, but you lose the benefits
 --
 
-== Why This Matters: Solving the Pain
+== Solving the Pain
 
 [%step]
 * ✅ *No more tuning guesswork:* Fewer knobs to turn
