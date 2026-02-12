@@ -7,7 +7,7 @@
 
 ---
 
-Julien Ruaux mailto:julien@redis.com[julien@redis.com]
+Julien Ruaux
 
 == The Pain 😫
 
@@ -174,10 +174,5 @@ You can't have a reactive pipe if one end is blocking
 * Lettuce: https://lettuce.io[lettuce.io]
 * https://github.com/redis-field-engineering/redis-cache-java[redis-field-engineering/redis-cache-java]
 * This presentation: https://decks.ruaux.org/reactive[decks.ruaux.org/reactive]
---
-
-[.col3-r]
---
-image::qrcode.svg[QR Code,200,200]
 --
 
