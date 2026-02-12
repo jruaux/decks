@@ -116,9 +116,8 @@ What if we didn't carry buckets at all?
 == Where Did This Come From?
 
 [%step]
-* *2009:* Rx.NET (Microsoft, Erik Meijer)
-* *2013:* Reactive Manifesto
-* *2014:* Reactive Streams (JVM spec)
+* *2009-2012*: Reactive principles emerge (RxJava, Reactive Streams)
+* *2015*: Language support
 * *Today:* RxJS, Reactor, Rx.NET, RxPy, Tokio
 
 [NOTE.speaker]
@@ -153,7 +152,7 @@ You can't have a reactive pipe if one end is blocking
 [%step]
 * ✅ *No more tuning guesswork:* Fewer knobs to turn
 * ✅ *Automatic flow control* (Backpressure)
-* ✅ *Better resource usage*
+* ✅ *Better resource usage* (reduce idle time)
 * ✅ *Simpler codebase:* ~4000 LOC → ~500 LOC
 
 [NOTE.speaker]
