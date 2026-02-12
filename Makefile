@@ -85,7 +85,7 @@ copy-assets:
 	done
 
 # Start a local web server
-serve:
+serve: build
 	@echo "Starting web server on http://localhost:$(PORT)"
 	@echo "Press Ctrl+C to stop the server"
 	@if command -v python3 >/dev/null 2>&1; then \
