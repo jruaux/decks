@@ -35,7 +35,7 @@ Julien Ruaux mailto:julien@redis.com[julien@redis.com]
 * How do we move water from source to fire?
 
 [background-image="fire-2.png",background-size="cover"]
-== The Batch Way: Carrying Buckets
+== The Batch Way
 
 [%step]
 * One thread = one person with buckets
@@ -89,10 +89,10 @@ What if we didn't carry buckets at all?
 --
 
 [background-image="fire-6.png",background-size="cover"]
-== The Reactive Way: A Water Pump
+== The Reactive Way
 
 [%step]
-* Stream, don't batch
+* Water pump: stream, don't batch
 * Publisher → Pipe → Subscriber
 * Water flows continuously as needed
 
