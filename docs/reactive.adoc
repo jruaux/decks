@@ -164,12 +164,10 @@ You can't have a reactive pipe if one end is blocking
 * Perfect for I/O-bound work like Redis replication
 --
 
-== Thank You!
+== Resources
 
 [.col3-l]
 --
-*Resources:*
-
 * Project Reactor: https://projectreactor.io[projectreactor.io]
 * Lettuce: https://lettuce.io[lettuce.io]
 * https://github.com/redis-field-engineering/redis-cache-java[redis-field-engineering/redis-cache-java]
