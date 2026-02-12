@@ -16,7 +16,6 @@ Julien Ruaux mailto:julien@redis.com[julien@redis.com]
 * How big should my batches be? 🤷
 * How many threads do I need? 🤷
 * What about queue sizes? 🤷
-* Trial and error... forever tuning
 
 [NOTE.speaker]
 --
