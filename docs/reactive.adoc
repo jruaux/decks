@@ -96,14 +96,6 @@ What if we didn't carry buckets at all?
 * Publisher → Pipe → Subscriber
 * Water flows continuously as needed
 
-[%step]
-*Backpressure:* Subscriber controls the flow
-
-[%step]
-* "Give me 10 items right now"
-* No overwhelming the target
-* Natural flow control
-
 [NOTE.speaker]
 --
 * Publisher (water source) → Pipe → Subscriber (fire)
@@ -112,6 +104,16 @@ What if we didn't carry buckets at all?
 * Subscriber tells Publisher how much it can handle
 * Prevents cascading failures
 --
+
+== The Reactive Way
+
+[%step]
+*Backpressure:* Subscriber controls the flow
+
+[%step]
+* "Give me 10 items right now"
+* No overwhelming the target
+* Natural flow control
 
 == Where Did This Come From?
 
